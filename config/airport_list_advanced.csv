@@ -1,0 +1,9 @@
+icao,name,priority
+ENGM,"Oslo Airport, Gardermoen",high
+ENBR,"Bergen Airport, Flesland",high
+ENVA,"Trondheim Airport, Værnes",medium
+ENTC,Tromsø Airport,medium
+ENBO,Bodø Airport,low
+ESSA,Stockholm Arlanda Airport,high
+EKCH,Copenhagen Airport,high
+EFHK,Helsinki Airport,high

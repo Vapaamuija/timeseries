@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""
+Development CLI entry point for weather-tool.
+
+This script allows running the CLI during development without installing the package.
+Usage: ./bin/weather-tool <command> [options]
+"""
+
+import sys
+from pathlib import Path
+
+# Add src to Python path for development
+project_root = Path(__file__).parent.parent
+src_path = project_root / "src"
+sys.path.insert(0, str(src_path))
+
+# Import and run CLI
+from weather_tool.cli import main
+
+if __name__ == "__main__":
+    main()

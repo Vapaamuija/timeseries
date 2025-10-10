@@ -1,0 +1,11 @@
+icao,name,latitude,longitude,elevation,country,region,municipality,iata,type
+ENGM,Oslo Airport Gardermoen,60.1939,11.1004,681,NO,NO-02,Ullensaker,OSL,large_airport
+ENBR,Bergen Airport Flesland,60.2934,5.2181,170,NO,NO-46,Bergen,BGO,large_airport
+ENVA,Trondheim Airport Værnes,63.4578,10.9239,56,NO,NO-50,Stjørdal,TRD,large_airport
+ENTC,Tromsø Airport,69.6833,18.9189,31,NO,NO-54,Tromsø,TOS,medium_airport
+ENBO,Bodø Airport,67.2692,14.3653,42,NO,NO-18,Bodø,BOO,medium_airport
+ESSA,Stockholm Arlanda Airport,59.6519,17.9186,137,SE,SE-AB,Sigtuna,ARN,large_airport
+EKCH,Copenhagen Airport,55.6181,12.6561,17,DK,DK-84,Kastrup,CPH,large_airport
+EFHK,Helsinki Airport,60.3172,24.9633,179,FI,FI-01,Vantaa,HEL,large_airport
+EHAM,Amsterdam Airport Schiphol,52.3086,4.7639,-11,NL,NL-NH,Haarlemmermeer,AMS,large_airport
+EGLL,London Heathrow Airport,51.4706,-0.4619,83,GB,GB-ENG,London,LHR,large_airport

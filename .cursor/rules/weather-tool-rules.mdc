@@ -1,0 +1,314 @@
+---
+description: Weather Tool Development Rules
+alwaysApply: true
+---
+
+You are an expert in Python, scientific data visualization, and meteorological data processing.
+
+## Key Principles
+- Write concise, technical responses with accurate Python examples using type hints.
+- Use functional, declarative programming; prefer dataclasses and protocols over complex inheritance.
+- Prioritize modularization and clean interfaces over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., `is_valid_data`, `has_weather_symbols`).
+- Use lowercase with underscores for directories and files (e.g., `plotting/components.py`).
+- Favor explicit imports and clear module boundaries.
+- Use the configuration-driven approach with YAML files and dataclasses.
+
+## Python/Weather Tool Specific
+- Use `def` for function definitions with comprehensive type hints.
+- Leverage dataclasses for configuration and data structures.
+- File structure: `src/weather_tool/` with clear module separation (core, data, plotting, airports, utils).
+- Use protocols and abstract base classes for extensible interfaces.
+- Prefer composition over inheritance for plotting components.
+
+## Error Handling and Validation
+- Prioritize error handling and edge cases:
+  - Handle missing weather data gracefully with fallback mechanisms.
+  - Use early returns for invalid ICAO codes, malformed data, or connection failures.
+  - Place the happy path last in functions for improved readability.
+  - Implement proper logging using the configured logger from `utils.logging`.
+  - Use custom exceptions for weather-specific errors (e.g., `DataSourceError`, `PlottingError`).
+  - Validate weather data ranges and units before processing.
+
+## Dependencies
+
+### Core Scientific Stack
+- NumPy (>=1.21.0) - Numerical computations and array operations
+- Pandas (>=1.3.0) - Weather data manipulation and time series
+- Matplotlib (>=3.5.0) - Core plotting functionality
+- Seaborn (>=0.11.0) - Statistical visualization and themes
+
+### Weather Data Processing
+- xarray (>=0.19.0) - Multi-dimensional weather data arrays
+- netCDF4 (>=1.5.7) - NetCDF file format support for THREDDS
+- MetPy (>=1.3.0) - Meteorological calculations and units
+- Cartopy (>=0.20.0) - Geospatial projections and mapping
+- PyProj (>=3.0.0) - Coordinate system transformations
+
+### Data Access and Configuration
+- Requests (>=2.25.0) - HTTP API client for Met.no services
+- PyYAML (>=6.0) - Configuration file parsing
+- Click (>=8.0.0) - Command-line interface framework
+- python-dotenv (>=0.19.0) - Environment variable management
+
+### Development and Testing
+- pytest (>=6.2.0) - Testing framework with visual regression tests
+- pytest-cov (>=2.12.0) - Coverage reporting
+- Black (>=21.0.0) - Code formatting (88 character line length)
+- MyPy (>=0.910) - Static type checking with strict configuration
+
+## Weather Tool Specific Guidelines
+
+### Configuration Management
+- Use YAML configuration files with dataclass-based parsing via `Config.from_file()`.
+- Support environment variable overrides with `Config.from_env()`.
+- Implement configuration validation and directory creation with `config.ensure_directories()`.
+- Use nested configuration classes (`APIConfig`, `THREDDSConfig`, `PlottingConfig`).
+- Support theme-based configuration for dynamic plotting styles.
+
+### Data Architecture
+- Use the unified data client registry pattern with `DataClientRegistry`.
+- Implement data source prioritization (Met.no unified > HTTP > File clients).
+- Use protocol-based interfaces (`WeatherDataClient`, `HTTPWeatherClient`, `FileWeatherClient`).
+- Handle multiple data sources gracefully with automatic fallback.
+- Implement proper caching strategies for weather data.
+
+### Plotting System
+- Use composition-based plotting with specialized components (`NorwegianMeteogramPlotter`).
+- Implement theme-aware plotting with `ThemeManager` and `WeatherTheme`.
+- Support multiple symbol types (SVG weather symbols with transparency).
+- Use `PlotConfig` for centralized plotting configuration.
+- Implement variable selection based on data availability.
+
+### Airport Management
+- Use `AirportManager` for ICAO code validation and airport data.
+- Support multiple airport data sources (CSV files, JSON databases).
+- Implement fuzzy search capabilities for airport lookup.
+- Validate ICAO codes before processing.
+
+## Performance Optimization
+- Use pandas vectorized operations for weather data processing.
+- Implement efficient NetCDF data loading with xarray.
+- Use matplotlib's constrained layout for optimal subplot arrangement.
+- Cache weather symbols and frequently accessed data.
+- Implement parallel processing for multi-airport plots with configurable `max_workers`.
+
+## Key Conventions
+
+### Project Structure
+```
+src/weather_tool/
+├── core/           # Configuration and main plotter classes
+├── data/           # Data access interfaces and clients  
+├── plotting/       # Plotting components and themes
+├── airports/       # Airport management and validation
+└── utils/          # Logging, helpers, and utilities
+```
+
+### Data Processing
+- Use xarray for multi-dimensional weather data with proper coordinate handling.
+- Implement unit-aware calculations with MetPy.
+- Handle time zones and UTC conversions properly.
+- Support multiple temporal resolutions (hourly, 3-hourly, 6-hourly).
+
+### Plotting Standards
+- Follow Norwegian meteorological visualization standards.
+- Use semantic color mapping for weather variables.
+- Implement proper axis labeling with units and Norwegian formatting.
+- Support high-DPI output (300 DPI default) for publication quality.
+- Use constrained layout for automatic subplot spacing.
+
+### CLI Design
+- Use Click for command-line interface with proper help text.
+- Support both individual and batch airport processing.
+- Implement time range parsing with natural language support.
+- Provide progress indicators for long-running operations.
+
+## Testing Strategy
+
+### Visual Regression Testing
+- Use comprehensive visual regression tests with reference images.
+- Implement multi-metric similarity analysis (MSE, SSIM, Histogram correlation).
+- Test all weather components individually and in combination.
+- Use deterministic test data for reproducible results.
+
+### Unit Testing
+- Test configuration loading and validation.
+- Test data client interfaces and error handling.
+- Test airport validation and search functionality.
+- Test weather data processing and unit conversions.
+
+### Integration Testing
+- Test end-to-end plotting workflows.
+- Test multiple data source fallback mechanisms.
+- Test CLI commands with various parameter combinations.
+
+## Weather Data Handling
+- Validate weather data ranges and units before processing.
+- Handle missing data with appropriate interpolation or masking.
+- Support multiple weather variables (temperature, pressure, precipitation, wind, clouds).
+- Implement proper meteorological calculations (dew point, wind chill, heat index).
+- Use standard meteorological units and conversions.
+
+## Logging and Monitoring
+- Use structured logging with configurable levels.
+- Log data source selection and fallback decisions.
+- Monitor API rate limits and implement respectful request patterns.
+- Log plotting performance metrics and data processing times.
+
+## Documentation Standards
+- Use comprehensive docstrings with type information.
+- Document weather data sources and their characteristics.
+- Provide examples for common plotting scenarios.
+- Document configuration options and their effects.
+- Maintain visual examples in Jupyter notebooks.
+
+## Code Style and Quality
+
+### Type Hints and Documentation
+- Use comprehensive type hints for all function signatures.
+- Document complex weather calculations with inline comments.
+- Use docstrings following NumPy/SciPy documentation standards.
+- Include units in variable names and documentation (e.g., `temp_celsius`, `pressure_hpa`).
+
+### Configuration Patterns
+```python
+from dataclasses import dataclass, field
+from typing import Optional, Dict, Any, List
+from pathlib import Path
+
+@dataclass
+class WeatherConfig:
+    """Weather-specific configuration with validation."""
+    api_timeout: int = 30
+    cache_dir: Path = Path("data/cache")
+    default_variables: List[str] = field(default_factory=lambda: ["temperature", "pressure"])
+    
+    def __post_init__(self):
+        """Validate configuration after initialization."""
+        if self.api_timeout <= 0:
+            raise ValueError("API timeout must be positive")
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+```
+
+### Data Processing Patterns
+```python
+import xarray as xr
+import pandas as pd
+from typing import Optional, Union, List
+
+def process_weather_data(
+    data: xr.Dataset, 
+    variables: Optional[List[str]] = None,
+    time_range: Optional[pd.DatetimeIndex] = None
+) -> pd.DataFrame:
+    """Process weather data with proper error handling."""
+    if data is None or data.sizes.get('time', 0) == 0:
+        raise ValueError("Empty or invalid weather data")
+    
+    # Early return for invalid time range
+    if time_range is not None and len(time_range) == 0:
+        return pd.DataFrame()
+    
+    # Process data (happy path)
+    processed = data.to_dataframe()
+    if variables:
+        available_vars = [v for v in variables if v in processed.columns]
+        processed = processed[available_vars]
+    
+    return processed
+```
+
+### Plotting Component Patterns
+```python
+from abc import ABC, abstractmethod
+from matplotlib.axes import Axes
+import matplotlib.pyplot as plt
+import pandas as pd
+
+class WeatherComponent(ABC):
+    """Base class for weather plot components."""
+    
+    @abstractmethod
+    def render(self, ax: Axes, data: pd.DataFrame, config: 'PlotConfig') -> None:
+        """Render component on the given axes."""
+        pass
+    
+    def validate_data(self, data: pd.DataFrame) -> bool:
+        """Validate required data is present."""
+        return not data.empty
+
+class TemperatureComponent(WeatherComponent):
+    """Temperature plotting component with zero-crossing colors."""
+    
+    def render(self, ax: Axes, data: pd.DataFrame, config: 'PlotConfig') -> None:
+        if not self.validate_data(data) or 'temperature' not in data.columns:
+            return
+        
+        temp_data = data['temperature'].dropna()
+        if temp_data.empty:
+            return
+        
+        # Color-coded temperature line (red above 0°C, blue below)
+        positive_mask = temp_data >= 0
+        ax.plot(temp_data.index[positive_mask], temp_data[positive_mask], 
+                color=config.colors.temperature_positive, linewidth=2)
+        ax.plot(temp_data.index[~positive_mask], temp_data[~positive_mask], 
+                color=config.colors.temperature_negative, linewidth=2)
+```
+
+### Error Handling Patterns
+```python
+import logging
+from typing import Optional
+from enum import Enum
+
+class WeatherDataError(Exception):
+    """Base exception for weather data errors."""
+    pass
+
+class DataSourceError(WeatherDataError):
+    """Error accessing weather data source."""
+    pass
+
+def fetch_weather_data(icao_code: str, client: 'WeatherDataClient') -> Optional[pd.DataFrame]:
+    """Fetch weather data with comprehensive error handling."""
+    logger = logging.getLogger(__name__)
+    
+    # Early validation
+    if not icao_code or len(icao_code) != 4:
+        logger.error(f"Invalid ICAO code: {icao_code}")
+        return None
+    
+    try:
+        # Attempt data fetch
+        data = client.get_data(icao_code)
+        if data is None or data.empty:
+            logger.warning(f"No data available for {icao_code}")
+            return None
+        
+        # Validate data quality
+        if not _validate_weather_data(data):
+            logger.error(f"Invalid weather data for {icao_code}")
+            return None
+        
+        # Happy path
+        logger.info(f"Successfully fetched data for {icao_code}")
+        return data
+        
+    except DataSourceError as e:
+        logger.error(f"Data source error for {icao_code}: {e}")
+        return None
+    except Exception as e:
+        logger.error(f"Unexpected error fetching data for {icao_code}: {e}")
+        return None
+```
+
+## Deployment and Distribution
+- Use setuptools with proper entry points for CLI commands.
+- Support installation via pip with optional dependencies.
+- Provide Docker support for consistent environments.
+- Include comprehensive requirements specification.
+- Support multiple Python versions (3.8+).
+
+Refer to the Met.no API documentation, matplotlib documentation, and xarray documentation for detailed information on weather data access, plotting best practices, and multi-dimensional data handling.

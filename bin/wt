@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""
+Short alias for weather-tool CLI during development.
+
+This provides a shorter command: ./bin/wt instead of ./bin/weather-tool
+Usage: ./bin/wt <command> [options]
+"""
+
+import sys
+from pathlib import Path
+
+# Add src to Python path for development
+project_root = Path(__file__).parent.parent
+src_path = project_root / "src"
+sys.path.insert(0, str(src_path))
+
+# Import and run CLI
+from weather_tool.cli import main
+
+if __name__ == "__main__":
+    main()

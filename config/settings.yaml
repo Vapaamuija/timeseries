@@ -1,0 +1,239 @@
+# Weather Tool Configuration File
+# This file contains default settings for the weather plotting tool
+
+# API Configuration
+api:
+  base_url: "https://api.met.no/weatherapi/locationforecast/2.0"
+  user_agent: "weather-tool/0.1.0 (your.email@example.com)"
+  timeout: 30
+  rate_limit_delay: 1.0
+
+# THREDDS Server Configuration
+thredds:
+  base_url: "https://thredds.met.no/thredds/catalog.html"
+  data_path: "/lustre/storeB/immutable/archive/projects/metproduction"
+  timeout: 60
+  max_retries: 3
+
+# Plotting Configuration
+plotting:
+  # Basic plotting settings
+  figure_size: [13, 8]            # Width, height in inches (matplotlib default units)
+  dpi: 300                        # High DPI for crisp output
+  style: "whitegrid"              # Seaborn style
+  color_palette: "husl"           # Color palette
+  tight_layout: true
+  constrained_layout: false
+  
+  # Font configuration
+  fonts:
+    family: ["DejaVu Sans", "Arial", "Helvetica", "sans-serif"]
+    base_size: 10
+    title_size: 16
+    subtitle_size: 14
+    label_size: 12
+    tick_size: 10
+    annotation_size: 9
+    weights:
+      title: "bold"
+      subtitle: "bold"
+      label: "normal"
+      tick: "normal"
+      annotation: "normal"
+  
+  # Color configuration
+  colors:
+    # UI colors
+    background: "#ffffff"              # White background
+    text: "#333333"                    # Dark gray text
+    grid: "#e0e0e0"                    # Light gray grid
+    grid_alpha: 0.3
+  
+  # Layout configuration
+  layout:
+    # Spacing
+    subplot_hspace: 0.3
+    subplot_wspace: 0.2
+    
+    # Margins
+    left_margin: 0.18               # Space for left-side legends (increased for better spacing)
+    right_margin: 0.88              # Space for right-side legends (decreased from 0.95)
+    top_margin: 0.93
+    bottom_margin: 0.08
+    
+    # Panel padding configuration
+    panel_padding:
+      hspace: 0.01                  # Tight spacing between panels
+      
+      # Individual panel margins (as fraction of figure)
+      hour_labels_top: 0.02
+      hour_labels_bottom: 0.01
+      cloud_panels_top: 0.005
+      cloud_panels_bottom: 0.005
+      weather_symbols_top: 0.01
+      weather_symbols_bottom: 0.01
+      main_params_top: 0.02
+      main_params_bottom: 0.02
+      time_axis_top: 0.01
+      time_axis_bottom: 0.01
+      wind_section_top: 0.01
+      wind_section_bottom: 0.02
+    
+    # Label padding configuration
+    label_padding:
+      # Left-side legends (temperature, wind speed)
+      left_legend_x: 0.02           # Distance from left edge (moved closer to edge)
+      left_legend_spacing: 0.02     # Vertical spacing between legend items
+      left_unit_offset: 0.05        # Offset for unit labels from scale values
+      
+      # Right-side legends (pressure, precipitation)
+      right_legend_x: 0.98          # Distance from right edge (moved closer to edge)
+      right_legend_spacing: 0.02    # Vertical spacing between legend items
+      right_unit_offset: 0.05       # Horizontal separation between pressure and precipitation legends
+      
+      # Cloud layer labels
+      cloud_label_x: 0.16           # Distance from left edge for cloud labels (adjusted for new margin)
+      cloud_label_offset: 0.01      # Horizontal offset for colored squares
+      
+      # Hour and date labels
+      hour_label_y: 0.3             # Vertical position within hour panel
+      date_label_y: 0.7             # Vertical position within hour panel
+      
+      # Wind legend
+      wind_legend_x: 0.85           # Horizontal position for wind legend
+      wind_legend_y: 0.02           # Vertical position for wind legend
+      
+      # Bottom legend column
+      bottom_legend_y: 0.04         # Vertical position for bottom legend (raised to avoid overlap)
+      bottom_legend_x_start: 0.15   # Starting horizontal position for bottom legend
+      bottom_legend_spacing: 0.12   # Horizontal spacing between legend items
+      
+      # Title and subtitle positioning
+      title_pad: 20                 # Padding above title
+      subtitle_pad: 10              # Padding above subtitle
+  
+  # Dynamic plotting settings
+  variables_to_plot: null  # null = auto-select, or specify list like ["temperature", "pressure"]
+  plot_layout: "auto"      # auto, grid, vertical, horizontal
+  max_variables_per_plot: 6
+  
+  # Variable configuration - defines how each variable is plotted
+  variable_config:
+    temperature:
+      label: "Temperature (°C)"
+      unit: "°C"
+      type: "continuous"
+      color_scheme: "diverging"
+      color_positive: "#d62728"    # Red for above 0°C
+      color_negative: "#1f77b4"    # Blue for below 0°C
+      zero_line: true
+    dew_point:
+      label: "Dew Point (°C)"
+      unit: "°C"
+      type: "continuous"
+      color_scheme: "sequential"
+      color: "#17becf"             # Cyan for dew point
+      zero_line: false
+    pressure:
+      label: "Pressure (hPa)"
+      unit: "hPa"
+      type: "continuous"
+      color_scheme: "sequential"
+      color: "#2ca02c"             # Green for pressure
+      zero_line: false
+    precipitation:
+      label: "Precipitation (mm)"
+      unit: "mm"
+      type: "continuous"
+      color_scheme: "sequential"
+      color: "#1f77b4"             # Blue for precipitation
+      zero_line: false
+      plot_type: "bar"
+    wind_speed:
+      label: "Wind Speed (m/s)"
+      unit: "m/s"
+      type: "continuous"
+      color_scheme: "sequential"
+      color: "#ff7f0e"             # Orange for wind
+      zero_line: false
+    humidity:
+      label: "Humidity (%)"
+      unit: "%"
+      type: "continuous"
+      color_scheme: "sequential"
+      color: "#9467bd"             # Purple for humidity
+      zero_line: false
+      y_limits: [0, 100]
+    cloud_cover:
+      label: "Cloud Cover (%)"
+      unit: "%"
+      type: "continuous"
+      color_scheme: "sequential"
+      color: "#8c564b"             # Brown for cloud cover
+      zero_line: false
+      y_limits: [0, 100]
+      plot_type: "area"
+    cloud_high:
+      label: "High Clouds"
+      unit: "%"
+      type: "continuous"
+      color: "#87CEEB"  # Light blue (sky blue) for high clouds
+      alpha: 1.0
+      edge_color: "#5F9EA0"
+      edge_width: 0.5
+    cloud_medium:
+      label: "Medium Clouds"
+      unit: "%"
+      type: "continuous"
+      color: "#4682B4"  # Steel blue for medium clouds
+      alpha: 1.0
+      edge_color: "#2F4F4F"
+      edge_width: 0.5
+    cloud_low:
+      label: "Low Clouds"
+      unit: "%"
+      type: "continuous"
+      color: "#2F4F4F"  # Dark slate gray for low clouds
+      alpha: 1.0
+      edge_color: "#1C1C1C"
+      edge_width: 0.5
+    fog:
+      label: "Fog"
+      unit: "%"
+      type: "continuous"
+      color: "#48CAE4"  # Medium turquoise for fog
+      alpha: 1.0
+      edge_color: "#0077BE"
+      edge_width: 0.5
+  
+  # Weather symbols
+  include_weather_symbols: true
+  symbol_size: 20
+  symbol_type: "svg"       # Default to SVG icons from metno_weather_icons/ directory
+
+# Directory Configuration
+data_dir: "data"
+cache_dir: "data/cache"
+output_dir: "output"
+
+# Logging Configuration
+log_level: "DEBUG"
+log_file: null  # Set to filename to enable file logging
+
+# Processing Configuration
+max_workers: 4
+chunk_size: 1000
+
+# T-series Configuration
+tseries_grid_interval: 1      # Vertical grid lines every N hours
+tseries_time_interval: 1      # Hour labels every N hours
+
+# Time Axis Padding Configuration
+time_axis_padding:
+  # Padding before first data point (as fraction of total time range)
+  start_padding: 0.05          # 5% padding before first data point
+  # Padding after last data point (as fraction of total time range)
+  end_padding: 0.05            # 5% padding after last data point
+  # Alternative: specify padding in hours instead of fractions
+  # start_padding_hours: 1.0   # 1 hour padding before first data point
+  # end_padding_hours: 1.0     # 1 hour padding after last data point
