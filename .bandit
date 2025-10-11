@@ -1,0 +1,18 @@
+# Bandit security linter configuration
+# This file configures bandit to scan for common security issues
+
+[bandit]
+exclude_dirs = tests,test_*,*_test
+skips = 
+    # B101: Test for use of assert (OK in tests)
+    B101,
+    # B601: Shell injection (sometimes necessary for system calls)
+    B601,
+    # B603: subprocess call without shell=True (sometimes needed)
+    B603,
+    # B607: Starting a process with a partial executable path (sometimes needed)
+    B607
+
+# Severity levels: LOW, MEDIUM, HIGH
+severity = MEDIUM
+confidence = MEDIUM

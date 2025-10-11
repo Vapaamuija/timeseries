@@ -1,0 +1,41 @@
+# Flake8 configuration file
+# This file is used to configure flake8 command line tool
+
+[flake8]
+max-line-length = 88
+extend-ignore = 
+    # E203: whitespace before ':' (conflicts with black)
+    E203,
+    # W503: line break before binary operator (conflicts with black)
+    W503,
+    # E501: line too long (handled by black)
+    E501,
+    # E402: module level import not at top of file (sometimes needed)
+    E402,
+    # F401: imported but unused (handled by isort)
+    F401
+
+exclude = 
+    .git,
+    __pycache__,
+    build,
+    dist,
+    .venv,
+    .eggs,
+    *.egg,
+    .pytest_cache,
+    .coverage,
+    htmlcov,
+    src/weather_tool.egg-info
+
+per-file-ignores =
+    # Allow unused imports in __init__.py files
+    __init__.py:F401
+    # Allow assert statements in tests
+    tests/*:S101
+    # Allow long lines in configuration files
+    setup.py:E501
+    pyproject.toml:E501
+
+max-complexity = 10
+select = E,W,F,C,N

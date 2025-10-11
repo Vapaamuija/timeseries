@@ -1,0 +1,45 @@
+{
+  "rulers": [88],
+  "word_wrap": "auto",
+  "wrap_width": 88,
+  "tab_size": 4,
+  "translate_tabs_to_spaces": true,
+  "trim_trailing_white_space_on_save": true,
+  "ensure_newline_at_eof_on_save": true,
+  "auto_indent": true,
+  "smart_indent": true,
+  "detect_indentation": false,
+  "python_interpreter": "./venv/bin/python",
+  "python_linting": true,
+  "python_linting_enabled": true,
+  "python_linting_pylint_enabled": false,
+  "python_linting_flake8_enabled": true,
+  "python_linting_flake8_args": [
+    "--max-line-length=88",
+    "--extend-ignore=E203,W503,E501"
+  ],
+  "python_formatting": "black",
+  "python_formatting_args": ["--line-length=88"],
+  "python_sort_imports": true,
+  "python_sort_imports_args": ["--profile=black"],
+  "file_exclude_patterns": [
+    "*.pyc",
+    "__pycache__",
+    ".pytest_cache",
+    ".coverage",
+    "htmlcov",
+    "bandit-report.json",
+    "*.egg-info",
+    "build",
+    "dist"
+  ],
+  "folder_exclude_patterns": [
+    "__pycache__",
+    ".pytest_cache",
+    ".coverage",
+    "htmlcov",
+    "*.egg-info",
+    "build",
+    "dist"
+  ]
+}

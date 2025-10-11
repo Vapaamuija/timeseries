@@ -39,8 +39,12 @@ setup(
             "pytest>=6.2.0",
             "pytest-cov>=2.12.0",
             "black>=21.0.0",
+            "isort>=5.10.0",
             "flake8>=3.9.0",
             "mypy>=0.910",
+            "bandit>=1.7.0",
+            "pylint>=2.12.0",
+            "pre-commit>=2.15.0",
         ],
         "advanced": [
             "plotly>=5.0.0",

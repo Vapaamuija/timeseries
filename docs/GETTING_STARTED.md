@@ -5,11 +5,13 @@ Welcome! This guide will help you get the weather tool up and running, even if y
 ## What You'll Need Before Starting
 
 ### Required Software
+
 1. **Python 3.8 or newer** - [Download from python.org](https://www.python.org/downloads/)
 2. **Git** - [Download from git-scm.com](https://git-scm.com/downloads/)
 3. **A code editor** - We recommend [VS Code](https://code.visualstudio.com/)
 
 ### Check Your Setup
+
 Open a terminal/command prompt and run these commands to verify:
 
 ```bash
@@ -23,6 +25,7 @@ If any command fails, install the missing software first.
 ## Step-by-Step Installation
 
 ### Step 1: Get the Code
+
 ```bash
 # Navigate to where you want the project
 cd ~/Desktop  # or wherever you keep projects
@@ -33,17 +36,20 @@ cd weather-tool
 ```
 
 ### Step 2: Install Dependencies
+
 ```bash
 # Install required Python packages
 pip install -r requirements.txt
 ```
 
 **If you get permission errors**, try:
+
 ```bash
 pip install --user -r requirements.txt
 ```
 
 ### Step 3: Test the Installation
+
 ```bash
 # Test that everything works
 python dev.py --help
@@ -60,9 +66,10 @@ python dev.py plot ENGM --output my_first_plot.png
 ```
 
 This will:
-- Get weather data for Oslo Airport (ENGM)
-- Create a weather plot
-- Save it as `my_first_plot.png` in the current folder
+
+-   Get weather data for Oslo Airport (ENGM)
+-   Create a weather plot
+-   Save it as `my_first_plot.png` in the current folder
 
 **Success!** You should now have a weather plot file you can open and view.
 
@@ -74,19 +81,20 @@ Let's break down what you just ran:
 python dev.py plot ENGM --output my_first_plot.png
 ```
 
-- `python dev.py` - Runs the weather tool
-- `plot` - Tells it to create a weather plot
-- `ENGM` - The airport code for Oslo Airport
-- `--output my_first_plot.png` - Where to save the plot
+-   `python dev.py` - Runs the weather tool
+-   `plot` - Tells it to create a weather plot
+-   `ENGM` - The airport code for Oslo Airport
+-   `--output my_first_plot.png` - Where to save the plot
 
 ## Try More Examples
 
 ### Different Airports
+
 ```bash
 # Copenhagen Airport
 python dev.py plot EKCH --output copenhagen.png
 
-# Stockholm Airport  
+# Stockholm Airport
 python dev.py plot ESSA --output stockholm.png
 
 # Bergen Airport
@@ -94,15 +102,17 @@ python dev.py plot ENBR --output bergen.png
 ```
 
 ### Different Plot Styles
+
 ```bash
 # Modern style (default)
 python dev.py plot ENGM --style modern --output modern_plot.png
 
-# Traditional Norwegian meteogram
+# Traditional meteogram
 python dev.py plot ENGM --style tseries --output traditional_plot.png
 ```
 
 ### Custom Time Ranges
+
 ```bash
 # Next 3 days
 python dev.py plot ENGM --end-time "2024-01-03 00:00" --output 3day_forecast.png
@@ -136,28 +146,34 @@ Now that you have the basics working, you can:
 ## Troubleshooting
 
 ### "python: command not found"
-- **On Windows**: Try `py` instead of `python`
-- **On Mac/Linux**: Make sure Python is installed and in your PATH
+
+-   **On Windows**: Try `py` instead of `python`
+-   **On Mac/Linux**: Make sure Python is installed and in your PATH
 
 ### "No module named 'requests'" (or similar)
-- Run: `pip install -r requirements.txt`
-- If that fails: `pip install --user -r requirements.txt`
+
+-   Run: `pip install -r requirements.txt`
+-   If that fails: `pip install --user -r requirements.txt`
 
 ### "Permission denied" errors
-- **On Windows**: Run command prompt as Administrator
-- **On Mac/Linux**: Add `--user` to pip commands: `pip install --user -r requirements.txt`
+
+-   **On Windows**: Run command prompt as Administrator
+-   **On Mac/Linux**: Add `--user` to pip commands: `pip install --user -r requirements.txt`
 
 ### "Cannot connect to weather service"
-- Check your internet connection
-- Try again in a few minutes (the service might be busy)
-- Use `python dev.py test-connection` to check what's working
+
+-   Check your internet connection
+-   Try again in a few minutes (the service might be busy)
+-   Use `python dev.py test-connection` to check what's working
 
 ### Plot looks wrong or empty
-- Make sure you used a valid airport code (try `python dev.py search "airport name"`)
-- Check that the time range isn't too far in the past
-- Try a different airport code to see if it's a data issue
+
+-   Make sure you used a valid airport code (try `python dev.py search "airport name"`)
+-   Check that the time range isn't too far in the past
+-   Try a different airport code to see if it's a data issue
 
 ### Still having problems?
+
 1. Make sure you followed each step exactly
 2. Check that all prerequisites are installed
 3. Try the examples in this guide first
@@ -165,9 +181,9 @@ Now that you have the basics working, you can:
 
 ## Getting Help
 
-- **Command help**: Add `--help` to any command
-- **Examples**: Look in the `examples/` folder
-- **Configuration**: Check `config/settings.yaml`
-- **Issues**: Create an issue on the project repository
+-   **Command help**: Add `--help` to any command
+-   **Examples**: Look in the `examples/` folder
+-   **Configuration**: Check `config/settings.yaml`
+-   **Issues**: Create an issue on the project repository
 
 Remember: Everyone starts somewhere! Don't hesitate to ask questions and experiment with the tool.

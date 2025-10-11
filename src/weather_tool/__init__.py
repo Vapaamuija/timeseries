@@ -8,14 +8,14 @@ __version__ = "0.1.0"
 __author__ = "Weather Tool Team"
 __email__ = "your.email@example.com"
 
+from .airports.manager import AirportManager
 from .core.config import Config
 from .core.weather_plotter import WeatherPlotter
 from .data.interfaces import DataClientRegistry
-from .airports.manager import AirportManager
+from .plotting.interfaces import PlotConfig
 
 # Plotting components (direct imports)
 from .plotting.plotters import MeteogramPlotter
-from .plotting.interfaces import PlotConfig
 
 __all__ = [
     "Config",
