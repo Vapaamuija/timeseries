@@ -148,6 +148,115 @@ def plot(
 
 
 @main.command()
+@click.argument("latitude", type=float)
+@click.argument("longitude", type=float)
+@click.option("--location-name", help="Name for the location (used in plot title)")
+@click.option(
+    "--start-time", help='Start time (YYYY-MM-DD HH:MM or relative like "24 hours ago")'
+)
+@click.option("--end-time", help='End time (YYYY-MM-DD HH:MM or relative like "now")')
+@click.option(
+    "--time-range",
+    help='Time range (e.g., "next 6 hours", "last 24 hours", "next 3 days")',
+)
+@click.option("--variables", help="Comma-separated list of variables to plot")
+@click.option(
+    "--data-source",
+    default="auto",
+    type=click.Choice(["auto", "metno", "http", "file"]),
+    help="Data source preference",
+)
+@click.option(
+    "--symbols",
+    type=click.Choice(["ascii", "unicode", "svg"]),
+    help="Weather symbol type",
+)
+@click.option("--output", "-o", help="Output file path")
+@click.option("--show/--no-show", default=False, help="Display plot after creation")
+@click.pass_context
+def plot_coords(
+    ctx: Any,
+    latitude: float,
+    longitude: float,
+    location_name: Optional[str],
+    start_time: Optional[str],
+    end_time: Optional[str],
+    time_range: Optional[str],
+    variables: Optional[str],
+    data_source: Optional[str],
+    symbols: Optional[str],
+    output: Optional[str],
+    show: bool,
+) -> None:
+    """Plot weather data for GPS coordinates."""
+    try:
+        # Import validate_coordinates here to avoid circular imports
+        from .utils.helpers import validate_coordinates
+        
+        # Validate coordinates
+        if not validate_coordinates(latitude, longitude):
+            click.echo(
+                f"Error: Invalid coordinates ({latitude}, {longitude})", err=True
+            )
+            click.echo("Latitude must be between -90 and 90", err=True)
+            click.echo("Longitude must be between -180 and 180", err=True)
+            return
+
+        # Parse time range
+        if time_range:
+            start_dt, end_dt = parse_time_range(time_range)
+            if start_dt is None or end_dt is None:
+                click.echo(f"Error: Invalid time range '{time_range}'", err=True)
+                click.echo(
+                    "Examples: 'next 6 hours', 'last 24 hours', 'next 3 days'", err=True
+                )
+                return
+        else:
+            if start_time:
+                start_dt = datetime.fromisoformat(start_time.replace("T", " "))
+            else:
+                start_dt = datetime.now() - timedelta(days=1)
+
+            if end_time:
+                end_dt = datetime.fromisoformat(end_time.replace("T", " "))
+            else:
+                end_dt = datetime.now() + timedelta(days=2)
+
+        # Parse variables
+        var_list = None
+        if variables:
+            var_list = [v.strip() for v in variables.split(",")]
+
+        # Create plotter
+        plotter = WeatherPlotter(ctx.obj)
+
+        location_display = location_name or f"({latitude:.4f}, {longitude:.4f})"
+        click.echo(f"Plotting weather data for {location_display}...")
+
+        # Create plot
+        plotter.plot_coordinates(
+            latitude=latitude,
+            longitude=longitude,
+            location_name=location_name,
+            start_time=start_dt,
+            end_time=end_dt,
+            variables=var_list,
+            data_source=data_source or "auto",
+            output_path=output,
+            symbol_type=symbols,
+        )
+
+        if show:
+            plt.show()
+
+        click.echo("Plot created successfully!")
+
+    except (ValueError, RuntimeError, OSError, IOError, FileNotFoundError) as e:
+        click.echo(f"Error: {e}", err=True)
+        logging.error("Plot coords command failed: %s", e)
+
+
+@main.command()
 @click.argument("icao_codes")
 @click.option("--start-time", help="Start time (YYYY-MM-DD HH:MM)")
 @click.option("--end-time", help="End time (YYYY-MM-DD HH:MM)")

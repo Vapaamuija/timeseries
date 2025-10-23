@@ -58,6 +58,11 @@ pip install -r requirements.txt
 ./bin/weather-tool plot EKCH --output copenhagen.png  # Copenhagen, Denmark
 ./bin/weather-tool plot EGLL --output london.png      # London Heathrow, UK
 
+# Plot weather for any location using GPS coordinates
+./bin/weather-tool plot-coords 59.9139 10.7522 --location-name "Oslo City Center" --output oslo_city.png
+./bin/weather-tool plot-coords 40.7128 -74.0060 --location-name "New York City" --output nyc.png
+./bin/weather-tool plot-coords 35.6762 139.6503 --location-name "Tokyo" --output tokyo.png
+
 # Search for airports
 ./bin/weather-tool search "paris"
 ./bin/weather-tool search "tokyo"
@@ -66,6 +71,34 @@ pip install -r requirements.txt
 ./bin/weather-tool plot ENGM --style modern --output modern.png
 ./bin/weather-tool plot ENGM --style tseries --output professional.png
 ```
+
+## GPS Coordinate Support
+
+You can plot weather data for any location worldwide using GPS coordinates:
+
+```bash
+# Basic coordinate plotting
+./bin/weather-tool plot-coords 59.9139 10.7522 --output oslo.png
+
+# With custom location name
+./bin/weather-tool plot-coords 59.9139 10.7522 --location-name "Oslo City Center"
+
+# With time range
+./bin/weather-tool plot-coords 59.9139 10.7522 --time-range "next 24 hours"
+
+# With specific variables
+./bin/weather-tool plot-coords 59.9139 10.7522 --variables "temperature,precipitation,wind"
+```
+
+### Coordinate Format
+- **Latitude**: -90 to 90 (negative for Southern Hemisphere)
+- **Longitude**: -180 to 180 (negative for Western Hemisphere)
+- **Examples**: 
+  - Oslo: `59.9139 10.7522`
+  - New York: `40.7128 -74.0060`
+  - Sydney: `-33.8688 151.2093` (Note: Use quotes for negative coordinates)
+
+**Note**: For negative coordinates, you may need to use quotes or the `--` separator to prevent them from being interpreted as command options.
 
 ## Project Structure
 
@@ -89,7 +122,8 @@ weather-tool/
 
 ```bash
 # Weather plotting commands
-./bin/weather-tool plot ENGM --output plot.png    # Full command
+./bin/weather-tool plot ENGM --output plot.png    # Plot by airport code
+./bin/weather-tool plot-coords 59.9139 10.7522 --output plot.png  # Plot by GPS coordinates
 ./bin/weather-tool search "oslo"                  # Search airports
 ./bin/weather-tool --help                         # Get help
 

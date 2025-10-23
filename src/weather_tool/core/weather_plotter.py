@@ -253,6 +253,110 @@ class WeatherPlotter:
         logger.info("Successfully plotted weather data for %s", icao_code)
         return fig
 
+    def plot_coordinates(
+        self,
+        latitude: float,
+        longitude: float,
+        location_name: Optional[str] = None,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
+        variables: Optional[List[str]] = None,
+        data_source: str = "auto",
+        output_path: Optional[str] = None,
+        symbol_type: Optional[str] = None,
+    ) -> Figure:
+        """Plot weather data for given GPS coordinates.
+
+        Args:
+            latitude: Latitude in decimal degrees (-90 to 90)
+            longitude: Longitude in decimal degrees (-180 to 180)
+            location_name: Optional name for the location (used in plot title)
+            start_time: Start time for data retrieval
+            end_time: End time for data retrieval
+            variables: List of weather variables to plot
+            data_source: Data source ("api", "files", or "auto")
+            output_path: Path to save the plot
+            symbol_type: Weather symbol type ("ascii", "unicode", or "svg")
+
+        Returns:
+            matplotlib Figure object
+        """
+        logger.info("Plotting weather data for coordinates %.4f, %.4f", latitude, longitude)
+
+        # Validate coordinates
+        if not (-90 <= latitude <= 90):
+            raise ValueError(f"Invalid latitude: {latitude}. Must be between -90 and 90")
+        if not (-180 <= longitude <= 180):
+            raise ValueError(f"Invalid longitude: {longitude}. Must be between -180 and 180")
+
+        # Set default time range if not provided
+        if not start_time:
+            start_time = datetime.now() - timedelta(days=1)
+        if not end_time:
+            end_time = datetime.now() + timedelta(days=2)
+
+        # Create location info dictionary (similar to airport structure)
+        location_info = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "name": location_name or f"Location ({latitude:.4f}, {longitude:.4f})",
+            "icao": None,  # No ICAO code for coordinates
+            "country": None,
+            "municipality": None,
+        }
+
+        # Get weather data
+        weather_data = self._fetch_weather_data(
+            location_info, start_time, end_time, variables, data_source
+        )
+
+        # Create meteogram plot
+        # Create custom plotter if symbol type is specified
+        if symbol_type:
+            # Convert string to SymbolType enum
+            symbol_type_enum = PlotSymbolType(symbol_type.lower())
+
+            # Create custom plot config with specified symbol type
+            custom_plot_config = PlotConfig(
+                # Basic plotting settings
+                figure_size=self.plot_config.figure_size,
+                dpi=self.plot_config.dpi,
+                style=self.plot_config.style,
+                color_palette=self.plot_config.color_palette,
+                tight_layout=self.plot_config.tight_layout,
+                constrained_layout=self.plot_config.constrained_layout,
+                # Font configuration
+                fonts=self.plot_config.fonts,
+                # Color configuration
+                colors=self.plot_config.colors,
+                # Layout configuration
+                layout=self.plot_config.layout,
+                # Symbol settings
+                symbol_type=symbol_type_enum,
+                symbol_size=self.plot_config.symbol_size,
+                auto_download_icons=self.plot_config.auto_download_icons,
+                include_weather_symbols=self.plot_config.include_weather_symbols,
+                # T-series specific
+                tseries_grid_interval=self.plot_config.tseries_grid_interval,
+                tseries_time_interval=self.plot_config.tseries_time_interval,
+                # Time axis padding configuration
+                time_axis_padding=self.plot_config.time_axis_padding,
+                # Variable configuration
+                variable_config=self.plot_config.variable_config,
+            )
+
+            custom_plotter = MeteogramPlotter(custom_plot_config)
+            fig = custom_plotter.create_plot(weather_data, location_info)
+        else:
+            # Use default meteogram plotter
+            fig = self.meteogram_plotter.create_plot(weather_data, location_info)
+
+        # Save plot if output path provided
+        if output_path:
+            self._save_plot(fig, output_path)
+
+        return fig
+
     def plot_multiple_airports(
         self,
         icao_codes: List[str],
