@@ -29,7 +29,9 @@ class TestMeteogramVisual:
         """Path to the reference diagram image."""
         path = Path(__file__).parent / "reference_images" / "diagram.png"
         if not path.exists():
-            pytest.skip("Reference image 'diagram.png' is missing; skipping visual comparison test.")
+            pytest.skip(
+                "Reference image 'diagram.png' is missing; skipping visual comparison test."
+            )
         return path
 
     @pytest.fixture
@@ -624,7 +626,9 @@ class TestMeteogramVisual:
         # Load reference and different images
         reference_path = Path(__file__).parent / "reference_images" / "diagram.png"
         if not reference_path.exists():
-            pytest.skip("Reference image 'diagram.png' is missing; skipping difference detection test.")
+            pytest.skip(
+                "Reference image 'diagram.png' is missing; skipping difference detection test."
+            )
         reference_img = Image.open(reference_path)
         different_img = Image.open(different_path)
 
