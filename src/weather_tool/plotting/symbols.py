@@ -38,7 +38,7 @@ class UnifiedWeatherSymbols(WeatherSymbolRenderer):
         pip install cairosvg pillow
 
     Or run the setup script:
-        ./setup_svg_rendering.sh
+        ./bin/setup_svg_rendering.sh
 
     If SVG rendering is not available, no weather symbols will be displayed.
     """

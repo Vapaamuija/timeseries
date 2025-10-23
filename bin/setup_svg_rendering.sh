@@ -7,9 +7,10 @@ echo "🎨 Weather Tool - SVG Rendering Setup"
 echo "====================================="
 echo ""
 
-# Ensure we run from the project root (directory containing this script)
+# Ensure we run from the project root (parent directory of this script)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+cd "$PROJECT_ROOT"
 
 # Activate local virtualenv if available
 if [ -d ".venv" ]; then

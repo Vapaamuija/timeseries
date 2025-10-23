@@ -56,16 +56,16 @@ mkdir -p data/cache
 mkdir -p logs
 
 # Configure and verify SVG rendering stack (Cairo/cairocffi)
-if [ -f "${PROJECT_ROOT}/setup_svg_rendering.sh" ]; then
+if [ -f "${PROJECT_ROOT}/bin/setup_svg_rendering.sh" ]; then
     echo "Running SVG rendering setup..."
-    bash "${PROJECT_ROOT}/setup_svg_rendering.sh" || {
-        echo "Warning: SVG rendering setup reported an issue. You can re-run 'make svg-setup' later." >&2
+    bash "${PROJECT_ROOT}/bin/setup_svg_rendering.sh" || {
+        echo "Warning: SVG rendering setup reported an issue. You can re-run './bin/dev svg-setup' later." >&2
     }
 fi
 
 # Test CLI access
 echo "Testing CLI access..."
-if ./bin/wt --help > /dev/null 2>&1; then
+if ./bin/weather-tool --help > /dev/null 2>&1; then
     echo "✓ CLI access working!"
 else
     echo "✗ CLI access failed"
@@ -77,14 +77,14 @@ echo "✅ Development environment ready!"
 echo ""
 echo "Usage:"
 echo "  source .venv/bin/activate           # Activate virtualenv"
-echo "  ./bin/wt --help                     # Show help"
-echo "  ./bin/wt plot ENGM --output test.png  # Test plot"
-echo "  ./bin/wt search oslo                # Search airports"
+echo "  ./bin/weather-tool --help                     # Show help"
+echo "  ./bin/weather-tool plot ENGM --output test.png  # Test plot"
+echo "  ./bin/weather-tool search oslo                # Search airports"
 echo ""
 echo "SVG setup:"
-echo "  make svg-setup                      # Configure Cairo + SVG rendering"
+echo "  ./bin/dev svg-setup                 # Configure Cairo + SVG rendering"
 echo ""
 echo "Short alias:"
-echo "  ./bin/wt plot ENGM --style tseries  # T-series meteogram"
+echo "  ./bin/weather-tool plot ENGM --style tseries  # T-series meteogram"
 echo ""
 echo "Happy developing! 🌤️"

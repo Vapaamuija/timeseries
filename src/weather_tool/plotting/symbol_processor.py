@@ -137,7 +137,7 @@ class SymbolProcessor:
         if not self.svg_renderer.has_high_quality_svg_support():
             logger.error("SVG rendering not available - cannot display weather symbols")
             logger.error("Install SVG support with: pip install cairosvg pillow")
-            logger.error("Or run the setup script: ./setup_svg_rendering.sh")
+            logger.error("Or run the setup script: ./bin/setup_svg_rendering.sh")
             return 0
 
         # Use proper time-based positioning to align with grid

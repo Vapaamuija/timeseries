@@ -124,7 +124,7 @@ class SVGRenderer:
 🍺 Using Homebrew (Recommended):
 1. Install Cairo library: brew install cairo
 2. Install Python packages: pip install cairosvg pillow
-3. Run the setup script: ./setup_svg_rendering.sh
+3. Run the setup script: ./bin/setup_svg_rendering.sh
 
 If you don't have Homebrew, install it from: https://brew.sh/
 
@@ -148,7 +148,7 @@ export PKG_CONFIG_PATH="/opt/homebrew/opt/cairo/lib/pkgconfig:$PKG_CONFIG_PATH"
 pip install cairosvg pillow
 
 🚀 Quick Setup:
-Run the setup script: ./setup_svg_rendering.sh
+Run the setup script: ./bin/setup_svg_rendering.sh
 
 🔧 Manual Setup (if needed):
 Add to your ~/.bashrc:
@@ -167,7 +167,7 @@ export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:$
 🐧 WSL2 Alternative (Recommended):
 1. Install WSL2 with Ubuntu
 2. Follow Ubuntu installation instructions
-3. Run: ./setup_svg_rendering.sh
+3. Run: ./bin/setup_svg_rendering.sh
 
 💡 Note: The fallback transparent markers work excellently without Cairo."""
 
@@ -177,7 +177,7 @@ export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:$
 🔧 General Instructions:
 1. Install Cairo development libraries for your system
 2. Install Python packages: pip install cairosvg pillow
-3. Run the setup script: ./setup_svg_rendering.sh
+3. Run the setup script: ./bin/setup_svg_rendering.sh
 
 📚 System-specific commands:
 • macOS: brew install cairo

@@ -52,7 +52,7 @@ pip install --user -r requirements.txt
 
 ```bash
 # Test that everything works
-python dev.py --help
+./bin/weather-tool --help
 ```
 
 You should see a help message with available commands. If you see an error, check the [Troubleshooting](#troubleshooting) section below.
@@ -62,8 +62,9 @@ You should see a help message with available commands. If you see an error, chec
 Let's create your first weather plot! Copy and paste this command:
 
 ```bash
-python dev.py plot ENGM --output my_first_plot.png
+./bin/weather-tool plot ENGM --output my_first_plot.png
 ```
+
 
 This will:
 
@@ -78,10 +79,10 @@ This will:
 Let's break down what you just ran:
 
 ```bash
-python dev.py plot ENGM --output my_first_plot.png
+./bin/weather-tool plot ENGM --output my_first_plot.png
 ```
 
--   `python dev.py` - Runs the weather tool
+-   `./bin/weather-tool` - Runs the weather tool
 -   `plot` - Tells it to create a weather plot
 -   `ENGM` - The airport code for Oslo Airport
 -   `--output my_first_plot.png` - Where to save the plot
@@ -92,33 +93,33 @@ python dev.py plot ENGM --output my_first_plot.png
 
 ```bash
 # Copenhagen Airport
-python dev.py plot EKCH --output copenhagen.png
+./bin/weather-tool plot EKCH --output copenhagen.png
 
 # Stockholm Airport
-python dev.py plot ESSA --output stockholm.png
+./bin/weather-tool plot ESSA --output stockholm.png
 
 # Bergen Airport
-python dev.py plot ENBR --output bergen.png
+./bin/weather-tool plot ENBR --output bergen.png
 ```
 
 ### Different Plot Styles
 
 ```bash
 # Modern style (default)
-python dev.py plot ENGM --style modern --output modern_plot.png
+./bin/weather-tool plot ENGM --style modern --output modern_plot.png
 
 # Traditional meteogram
-python dev.py plot ENGM --style tseries --output traditional_plot.png
+./bin/weather-tool plot ENGM --style tseries --output traditional_plot.png
 ```
 
 ### Custom Time Ranges
 
 ```bash
 # Next 3 days
-python dev.py plot ENGM --end-time "2024-01-03 00:00" --output 3day_forecast.png
+./bin/weather-tool plot ENGM --end-time "2024-01-03 00:00" --output 3day_forecast.png
 
 # Specific date range
-python dev.py plot ENGM --start-time "2024-01-01 12:00" --end-time "2024-01-02 12:00" --output custom_range.png
+./bin/weather-tool plot ENGM --start-time "2024-01-01 12:00" --end-time "2024-01-02 12:00" --output custom_range.png
 ```
 
 ## Finding Airport Codes
@@ -127,9 +128,9 @@ Don't know an airport code? Use the search feature:
 
 ```bash
 # Search for airports
-python dev.py search "oslo"
-python dev.py search "london"
-python dev.py search "new york"
+./bin/weather-tool search "oslo"
+./bin/weather-tool search "london"
+./bin/weather-tool search "new york"
 ```
 
 This will show you the airport codes (like ENGM, EGLL, KJFK) that you can use in your plots.
@@ -138,7 +139,7 @@ This will show you the airport codes (like ENGM, EGLL, KJFK) that you can use in
 
 Now that you have the basics working, you can:
 
-1. **Explore more commands**: Run `python dev.py --help` to see all options
+1. **Explore more commands**: Run `./bin/weather-tool --help` to see all options
 2. **Try the Python API**: Look at `examples/basic_plotting.py`
 3. **Customize settings**: Edit `config/settings.yaml`
 4. **Read the main README**: For more advanced features
@@ -164,11 +165,11 @@ Now that you have the basics working, you can:
 
 -   Check your internet connection
 -   Try again in a few minutes (the service might be busy)
--   Use `python dev.py test-connection` to check what's working
+-   Use `./bin/weather-tool test-connection` to check what's working
 
 ### Plot looks wrong or empty
 
--   Make sure you used a valid airport code (try `python dev.py search "airport name"`)
+-   Make sure you used a valid airport code (try `./bin/weather-tool search "airport name"`)
 -   Check that the time range isn't too far in the past
 -   Try a different airport code to see if it's a data issue
 

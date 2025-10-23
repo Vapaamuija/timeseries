@@ -33,14 +33,14 @@ pip install black isort flake8 mypy bandit pylint pre-commit
 pre-commit install
 
 # Or use the development script
-python dev.py pre-commit-install
+./bin/dev pre-commit-install
 ```
 
 ### 3. Format Your Code
 
 ```bash
 # Format all code
-python dev.py format
+./bin/dev format
 
 # Or use individual tools
 black src/ tests/ scripts/ bin/ dev.py
@@ -53,53 +53,53 @@ isort src/ tests/ scripts/ bin/ dev.py
 
 ```bash
 # Format code
-python dev.py format
+./bin/dev format
 
 # Run all linting checks
-python dev.py lint
+./bin/dev lint
 
 # Run tests
-python dev.py test
+./bin/dev test
 
 # Run tests with coverage
-python dev.py test-cov
+./bin/dev test-cov
 
 # Install pre-commit hooks
-python dev.py pre-commit-install
+./bin/dev pre-commit-install
 
 # Run pre-commit on all files
-python dev.py pre-commit-run
+./bin/dev pre-commit-run
 
 # Clean build artifacts
-python dev.py clean
+./bin/dev clean
 
 # Run everything (format, lint, test)
-python dev.py all
+./bin/dev all
 ```
 
 ### Using Make
 
 ```bash
 # Format code
-make format
+./bin/dev format
 
 # Run linting
-make lint
+./bin/dev lint
 
 # Run tests
-make test
+./bin/dev test
 
 # Run tests with coverage
-make test-cov
+./bin/dev test-cov
 
 # Install pre-commit hooks
-make pre-commit-install
+./bin/dev pre-commit-install
 
 # Clean build artifacts
-make clean
+./bin/dev clean
 
 # Show all available commands
-make help
+./bin/dev --help
 ```
 
 ### Using Individual Tools
@@ -263,7 +263,7 @@ Configure external tools:
 
 ## Best Practices
 
-1. **Run formatting before committing**: Use `python dev.py format`
+1. **Run formatting before committing**: Use `./bin/dev format`
 2. **Fix linting issues**: Address all flake8 and mypy warnings
 3. **Review security reports**: Check bandit output for vulnerabilities
 4. **Keep dependencies updated**: Run `pre-commit autoupdate` regularly

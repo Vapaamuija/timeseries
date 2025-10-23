@@ -16,7 +16,7 @@ This tool downloads real weather data and creates beautiful charts showing:
 **Example**: Create a weather chart for Oslo Airport with just one command!
 
 ```bash
-python dev.py plot ENGM --output oslo_weather.png
+./bin/weather-tool plot ENGM --output oslo_weather.png
 ```
 
 ## Quick Start
@@ -38,14 +38,14 @@ cd weather-tool
 pip install -r requirements.txt
 
 # For high-quality weather symbols (optional but recommended)
-./setup_svg_rendering.sh
+./bin/setup_svg_rendering.sh
 ```
 
 ### Your First Weather Plot
 
 ```bash
 # Create a weather plot for Oslo Airport
-python dev.py plot ENGM --output my_first_weather_plot.png
+./bin/weather-tool plot ENGM --output my_first_weather_plot.png
 ```
 
 **Success!** You should now have a weather plot file called `my_first_weather_plot.png` 🎉
@@ -54,29 +54,50 @@ python dev.py plot ENGM --output my_first_weather_plot.png
 
 ```bash
 # Try different airports
-python dev.py plot ENGM --output oslo.png        # Oslo, Norway
-python dev.py plot EKCH --output copenhagen.png  # Copenhagen, Denmark
-python dev.py plot EGLL --output london.png      # London Heathrow, UK
+./bin/weather-tool plot ENGM --output oslo.png        # Oslo, Norway
+./bin/weather-tool plot EKCH --output copenhagen.png  # Copenhagen, Denmark
+./bin/weather-tool plot EGLL --output london.png      # London Heathrow, UK
 
 # Search for airports
-python dev.py search "paris"
-python dev.py search "tokyo"
+./bin/weather-tool search "paris"
+./bin/weather-tool search "tokyo"
 
 # Different plot styles
-python dev.py plot ENGM --style modern --output modern.png
-python dev.py plot ENGM --style tseries --output professional.png
+./bin/weather-tool plot ENGM --style modern --output modern.png
+./bin/weather-tool plot ENGM --style tseries --output professional.png
 ```
 
 ## Project Structure
 
 ```
 weather-tool/
-├── dev.py                    # Main command-line tool
+├── bin/                      # Command-line tools
+│   ├── weather-tool          # Main weather tool CLI
+│   ├── dev                   # Development utilities (format, lint, test)
+│   ├── setup-dev.sh          # Development environment setup
+│   └── setup_svg_rendering.sh # SVG rendering setup
 ├── requirements.txt          # Required Python packages
 ├── config/settings.yaml      # Configuration file
 ├── src/weather_tool/         # Main Python package
 ├── docs/                     # Complete documentation
 └── output/                   # Your generated plots go here
+```
+
+**Important**: Use `./bin/weather-tool` for weather plotting, and `./bin/dev` for development tasks like formatting and testing.
+
+### Quick Command Reference
+
+```bash
+# Weather plotting commands
+./bin/weather-tool plot ENGM --output plot.png    # Full command
+./bin/weather-tool search "oslo"                  # Search airports
+./bin/weather-tool --help                         # Get help
+
+# Development commands  
+./bin/dev format                                  # Format code
+./bin/dev lint                                    # Check code quality
+./bin/dev test                                    # Run tests
+./bin/dev --help                                  # Development help
 ```
 
 ## Documentation
@@ -87,6 +108,7 @@ Complete documentation is available in the `docs/` folder:
 -   **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Complete development environment setup with pyenv/venv
 -   **[docs/EDITOR_SETUP.md](docs/EDITOR_SETUP.md)** - Editor configuration guide
 -   **[docs/FORMATTING.md](docs/FORMATTING.md)** - Code formatting and quality tools
+-   **[docs/BIN_SCRIPTS.md](docs/BIN_SCRIPTS.md)** - Development scripts usage guide
 
 ### Additional Documentation (Coming Soon)
 
@@ -107,9 +129,9 @@ Complete documentation is available in the `docs/` folder:
 
 ```bash
 # Run these to check if everything works
-python dev.py --help           # Should show help text
-python dev.py test-connection  # Should show "Connection OK"
-python dev.py plot ENGM --output test.png  # Should create a plot
+./bin/weather-tool --help           # Should show help text
+./bin/weather-tool test-connection  # Should show "Connection OK"
+./bin/weather-tool plot ENGM --output test.png  # Should create a plot
 ```
 
 ## What Makes This Tool Special?

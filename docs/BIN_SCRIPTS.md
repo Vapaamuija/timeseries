@@ -1,6 +1,6 @@
-# Development CLI Access
+# Development Scripts Guide
 
-This directory contains scripts for running the weather-tool CLI during development without installing the package.
+This guide explains how to use the development scripts in the `bin/` directory for running the weather-tool CLI and development utilities during development without installing the package.
 
 ## Quick Start
 
@@ -12,76 +12,85 @@ This directory contains scripts for running the weather-tool CLI during developm
 
 ### **2. Use CLI During Development**
 ```bash
-# Full command name
+# Main weather tool CLI
 ./bin/weather-tool --help
 ./bin/weather-tool plot ENGM --output test.png
+./bin/weather-tool plot ENGM --style tseries --output test.png
+```
 
-# Short alias (recommended)
-./bin/wt --help
-./bin/wt plot ENGM --style tseries --output test.png
+### **3. Development Utilities**
+```bash
+# Code formatting and quality
+./bin/dev format                              # Format code
+./bin/dev lint                                # Check code quality
+./bin/dev test                                # Run tests
+./bin/dev --help                              # Show all dev commands
+```
 
-# Python script
-python bin/dev-cli.py plot ENGM --style modern
+### **4. SVG Rendering Setup**
+```bash
+# Setup high-quality SVG weather symbols
+./bin/setup_svg_rendering.sh                 # Configure Cairo + SVG rendering
 ```
 
 ## Available Scripts
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
-| `weather-tool` | Full CLI access | `./bin/weather-tool <command>` |
-| `wt` | Short alias | `./bin/wt <command>` |
-| `dev-cli.py` | Python runner | `python bin/dev-cli.py <command>` |
+| `weather-tool` | Main CLI access | `./bin/weather-tool <command>` |
+| `dev` | Development utilities | `./bin/dev <command>` |
 | `setup-dev.sh` | Development setup | `./bin/setup-dev.sh` |
+| `setup_svg_rendering.sh` | SVG rendering setup | `./bin/setup_svg_rendering.sh` |
 
 ## Development Examples
 
 ### **Testing Plot Styles**
 ```bash
 # Modern style
-./bin/wt plot ENGM --style modern --output modern.png
+./bin/weather-tool plot ENGM --style modern --output modern.png
 
 # T-series meteogram
-./bin/wt plot ENGM --style tseries --output tseries.png
+./bin/weather-tool plot ENGM --style tseries --output tseries.png
 
 # Comparison plot
-./bin/wt plot-multiple ENGM,ENBR --style comparison --variable temperature --output comparison.png
+./bin/weather-tool plot-multiple ENGM,ENBR --style comparison --variable temperature --output comparison.png
 ```
 
 ### **Testing Data Sources**
 ```bash
 # Unified Met.no client (recommended)
-./bin/wt plot ENGM --data-source metno --output metno.png
+./bin/weather-tool plot ENGM --data-source metno --output metno.png
 
 # HTTP API only
-./bin/wt plot ENGM --data-source http --output http.png
+./bin/weather-tool plot ENGM --data-source http --output http.png
 
 # THREDDS files only
-./bin/wt plot ENGM --data-source file --output file.png
+./bin/weather-tool plot ENGM --data-source file --output file.png
 ```
 
 ### **Testing Weather Symbols**
 ```bash
 # ASCII symbols (no font warnings)
-./bin/wt plot ENGM --symbols ascii --output ascii.png
+./bin/weather-tool plot ENGM --symbols ascii --output ascii.png
 
 # Unicode symbols
-./bin/wt plot ENGM --symbols unicode --output unicode.png
+./bin/weather-tool plot ENGM --symbols unicode --output unicode.png
 ```
 
 ### **Utility Commands**
 ```bash
 # Search airports
-./bin/wt search "oslo"
-./bin/wt search "bergen"
+./bin/weather-tool search "oslo"
+./bin/weather-tool search "bergen"
 
 # List Norwegian airports
-./bin/wt list-airports --country NO --limit 10
+./bin/weather-tool list-airports --country NO --limit 10
 
 # Test connections
-./bin/wt test-connection --http --file
+./bin/weather-tool test-connection --http --file
 
 # Export configuration
-./bin/wt export-config --output my_config.yaml
+./bin/weather-tool export-config --output my_config.yaml
 ```
 
 ## Advantages
@@ -92,7 +101,7 @@ python bin/dev-cli.py plot ENGM --style modern
 - Works in any Python environment
 
 ### ✅ **Fast Development Cycle**
-- Edit code → Run `./bin/wt` → See results
+- Edit code → Run `./bin/weather-tool` → See results
 - No reinstallation between changes
 - Instant feedback
 
@@ -121,8 +130,7 @@ pip install -r requirements.txt
 ```bash
 # Make scripts executable
 chmod +x bin/weather-tool
-chmod +x bin/wt
-chmod +x bin/dev-cli.py
+chmod +x bin/dev
 chmod +x bin/setup-dev.sh
 ```
 
@@ -132,28 +140,28 @@ chmod +x bin/setup-dev.sh
 cd /Users/jaakkosuutarla/Development/personal/weather-tool
 
 # Use relative path
-./bin/wt --help
+./bin/weather-tool --help
 ```
 
 ## Integration Examples
 
-### **Makefile Integration**
-```makefile
-# Add to Makefile
+### **Development Script Integration**
+```bash
+# Add to your development workflow
 test-cli:
-	./bin/wt plot ENGM --output test.png
+	./bin/weather-tool plot ENGM --output test.png
 
 test-tseries:
-	./bin/wt plot ENGM --style tseries --output tseries_test.png
+	./bin/weather-tool plot ENGM --style tseries --output tseries_test.png
 
 clean:
-	rm -f output/test*.png
+	./bin/dev clean
 ```
 
 ### **Shell Aliases**
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
-alias wt-dev='cd /Users/jaakkosuutarla/Development/personal/weather-tool && ./bin/wt'
+alias wt-dev='cd /Users/jaakkosuutarla/Development/personal/weather-tool && ./bin/weather-tool'
 
 # Usage from anywhere
 wt-dev plot ENGM --output test.png
@@ -167,7 +175,7 @@ COPY src/ /app/src/
 WORKDIR /app
 
 # Run CLI in container
-RUN ./bin/wt --help
+RUN ./bin/weather-tool --help
 ```
 
 Happy developing! 🚀
