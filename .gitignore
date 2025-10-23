@@ -198,6 +198,7 @@ test_*.gif
 test_*.svg
 test_*.pdf
 test_*.eps
+!tests/reference_images/diagram.png
 
 # Temporary files
 *.tmp

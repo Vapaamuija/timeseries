@@ -1,13 +1,15 @@
 # Makefile for weather-tool development
 # Provides convenient commands for code formatting, linting, and testing
 
-.PHONY: help install install-dev format lint test clean pre-commit-install pre-commit-run
+.PHONY: help install install-dev format lint test clean pre-commit-install pre-commit-run bootstrap svg-setup dev-setup
 
 # Default target
 help:
 	@echo "Available commands:"
 	@echo "  install          Install the package"
 	@echo "  install-dev      Install development dependencies"
+	@echo "  bootstrap        Pyenv + venv setup (usage: make bootstrap PY=3.11.9)"
+	@echo "  svg-setup        Configure Cairo + SVG rendering (calls setup_svg_rendering.sh)"
 	@echo "  format           Format code with black and isort"
 	@echo "  lint             Run all linting tools"
 	@echo "  lint-black       Check code formatting with black"
@@ -28,6 +30,16 @@ install:
 
 install-dev:
 	pip install -e ".[dev]"
+
+# Bootstrap (pyenv-aware). Override PY to select Python version.
+PY ?= 3.11.9
+bootstrap:
+	./bin/bootstrap.sh $(PY)
+
+# Cairo/SVG rendering setup wrapper
+svg-setup:
+	@echo "Running SVG rendering setup..."
+	bash setup_svg_rendering.sh
 
 # Code formatting
 format:
@@ -100,7 +112,7 @@ clean:
 	@echo "Cleanup complete!"
 
 # Development workflow
-dev-setup: install-dev pre-commit-install
+dev-setup: install-dev pre-commit-install svg-setup
 	@echo "Development environment setup complete!"
 	@echo "Run 'make format' to format your code"
 	@echo "Run 'make lint' to check code quality"

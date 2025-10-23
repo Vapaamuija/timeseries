@@ -7,6 +7,19 @@ echo "🎨 Weather Tool - SVG Rendering Setup"
 echo "====================================="
 echo ""
 
+# Ensure we run from the project root (directory containing this script)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+# Activate local virtualenv if available
+if [ -d ".venv" ]; then
+    echo "📦 Activating virtual environment (.venv)"
+    # shellcheck disable=SC1091
+    source .venv/bin/activate || true
+else
+    echo "⚠️  No .venv found. Proceeding with current Python environment"
+fi
+
 # Detect operating system
 OS="$(uname -s)"
 case "${OS}" in
@@ -93,7 +106,30 @@ install_cairo
 echo ""
 echo "📦 Installing Python packages..."
 
-# Reinstall Python packages to ensure proper linking
+# Ensure core project dependencies are present (pandas is a good proxy)
+if ! python - <<'PY'
+import sys
+try:
+    import pandas  # noqa: F401
+except Exception:
+    sys.exit(1)
+sys.exit(0)
+PY
+then
+    if [ -f "requirements.txt" ]; then
+        echo "📥 Installing project requirements (this may take a while)..."
+        pip install -U pip setuptools wheel
+        pip install -r requirements.txt
+    else
+        echo "❌ requirements.txt not found; cannot install core dependencies"
+        echo "   Please run this script from the project root."
+        exit 1
+    fi
+else
+    echo "✅ Core Python dependencies already available"
+fi
+
+# Reinstall Cairo-related Python packages to ensure proper linking
 pip uninstall -y cairocffi cairosvg 2>/dev/null || true
 pip install cairocffi cairosvg pillow
 
@@ -169,8 +205,8 @@ import os
 os.environ['DYLD_LIBRARY_PATH'] = '/opt/homebrew/opt/cairo/lib:' + os.environ.get('DYLD_LIBRARY_PATH', '')
 
 try:
-    from src.weather_tool.plotting.symbols import UnifiedWeatherSymbols
-    from src.weather_tool.plotting.interfaces import PlotConfig, SymbolType
+    from weather_tool.plotting.symbols import UnifiedWeatherSymbols
+    from weather_tool.plotting.interfaces import PlotConfig, SymbolType
     
     config = PlotConfig(symbol_type=SymbolType.SVG)
     renderer = UnifiedWeatherSymbols(config)
