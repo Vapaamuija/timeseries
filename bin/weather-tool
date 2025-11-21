@@ -7,7 +7,27 @@ Usage: ./bin/weather-tool <command> [options]
 """
 
 import sys
+import os
 from pathlib import Path
+
+# Check for virtual environment and re-execute if needed
+def ensure_venv():
+    # Only checking if not already in a venv (simple heuristic)
+    if sys.prefix != sys.base_prefix:
+        return
+
+    project_root = Path(__file__).resolve().parent.parent
+    
+    # Check for common venv names
+    for venv_name in [".venv", "venv"]:
+        venv_python = project_root / venv_name / "bin" / "python"
+        if venv_python.exists():
+            # Found a venv, re-execute using it
+            # We need to pass the script path as the first argument to the new python
+            # and then the rest of the arguments
+            os.execv(str(venv_python), [str(venv_python), __file__] + sys.argv[1:])
+
+ensure_venv()
 
 # Add src to Python path for development
 project_root = Path(__file__).parent.parent

@@ -106,9 +106,14 @@ class MeteogramPlotter(WeatherPlotter):
         label_padding = self.config.get_effective_label_padding()
 
         # Create meteogram layout using layout manager with configurable padding
+        # Use figure size from configuration if available
+        figsize = (16, 12)
+        if hasattr(self.config, "figure_size") and self.config.figure_size:
+             figsize = self.config.figure_size
+        
         fig, axes = self.layout_manager.create_meteogram_layout(
             self.height_ratios,
-            figsize=(16, 12),
+            figsize=figsize,
             panel_padding=panel_padding,
             layout_config=layout_config,
         )

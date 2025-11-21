@@ -56,10 +56,10 @@ plotting:
     subplot_wspace: 0.2
     
     # Margins
-    left_margin: 0.18               # Space for left-side legends (increased for better spacing)
-    right_margin: 0.88              # Space for right-side legends (decreased from 0.95)
+    left_margin: 0.18               # Space for left-side legends
+    right_margin: 0.85              # Space for right-side legends (decreased for better spacing)
     top_margin: 0.93
-    bottom_margin: 0.08
+    bottom_margin: 0.12
     
     # Panel padding configuration
     panel_padding:
@@ -82,12 +82,12 @@ plotting:
     # Label padding configuration
     label_padding:
       # Left-side legends (temperature, wind speed)
-      left_legend_x: 0.02           # Distance from left edge (moved closer to edge)
+      left_legend_x: 0.04           # Distance from left edge (moved in for visibility)
       left_legend_spacing: 0.02     # Vertical spacing between legend items
       left_unit_offset: 0.05        # Offset for unit labels from scale values
       
       # Right-side legends (pressure, precipitation)
-      right_legend_x: 0.98          # Distance from right edge (moved closer to edge)
+      right_legend_x: 0.96          # Distance from right edge (moved in for visibility)
       right_legend_spacing: 0.02    # Vertical spacing between legend items
       right_unit_offset: 0.05       # Horizontal separation between pressure and precipitation legends
       
@@ -104,7 +104,7 @@ plotting:
       wind_legend_y: 0.02           # Vertical position for wind legend
       
       # Bottom legend column
-      bottom_legend_y: 0.04         # Vertical position for bottom legend (raised to avoid overlap)
+      bottom_legend_y: 0.08         # Vertical position for bottom legend (raised to avoid overlap)
       bottom_legend_x_start: 0.15   # Starting horizontal position for bottom legend
       bottom_legend_spacing: 0.12   # Horizontal spacing between legend items
       

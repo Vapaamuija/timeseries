@@ -134,10 +134,10 @@ class LayoutManager:
 
         # Use configurable spacing and margins
         hspace = 0.05  # Default
-        left = 0.15  # Default
-        right = 0.95  # Default
+        left = 0.18  # Default
+        right = 0.85  # Default
         top = 0.95  # Default
-        bottom = 0.1  # Default
+        bottom = 0.12  # Default
 
         # Apply layout config if provided
         if layout_config:
@@ -859,7 +859,7 @@ class BottomLegendPlotter:
         self, legend_positioning_config: Optional[Any] = None
     ) -> tuple:
         """Get legend positioning configuration."""
-        legend_vertical_position = 0.02
+        legend_vertical_position = 0.08
         legend_horizontal_start_position = 0.15
         legend_item_horizontal_spacing = 0.12
 
