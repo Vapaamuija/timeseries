@@ -123,8 +123,9 @@ class MeteogramGridManager(GridManager):
         # Temperature grid (primary axis)
         if "temperature" in data.columns:
             temp_min, temp_max = ax_main.get_ylim()
+            # Use more grid lines for temperature to match reference density (approx 1 degree steps)
             temp_grid: List[float] = FormattingUtils.calculate_nice_grid_values(
-                temp_min, temp_max, maximum_grid_lines=6
+                temp_min, temp_max, maximum_grid_lines=10
             )
             self._shared_grid_values["temperature"] = {
                 "values": temp_grid,
@@ -140,8 +141,9 @@ class MeteogramGridManager(GridManager):
             and self._wind_axis is not None
         ):
             wind_min, wind_max = self._wind_axis.get_ylim()
+            # Wind speed usually in steps of 2 m/s
             wind_grid: List[float] = FormattingUtils.calculate_nice_grid_values(
-                wind_min, wind_max, maximum_grid_lines=6
+                wind_min, wind_max, maximum_grid_lines=10
             )
             self._shared_grid_values["wind_speed"] = {
                 "values": wind_grid,
@@ -157,8 +159,9 @@ class MeteogramGridManager(GridManager):
             and self._pressure_axis is not None
         ):
             pressure_min, pressure_max = self._pressure_axis.get_ylim()
+            # Pressure usually in steps of 5 or 10 hPa
             pressure_grid: List[float] = FormattingUtils.calculate_nice_grid_values(
-                pressure_min, pressure_max, maximum_grid_lines=6
+                pressure_min, pressure_max, maximum_grid_lines=10
             )
             self._shared_grid_values["pressure"] = {
                 "values": pressure_grid,
@@ -174,8 +177,9 @@ class MeteogramGridManager(GridManager):
             and self._precip_axis is not None
         ):
             precip_min, precip_max = self._precip_axis.get_ylim()
+            # Precipitation usually in steps of 1 or 2 mm
             precip_grid: List[float] = FormattingUtils.calculate_nice_grid_values(
-                precip_min, precip_max, maximum_grid_lines=6
+                precip_min, precip_max, maximum_grid_lines=10
             )
             # Filter out negative values for precipitation
             precip_grid = [val for val in precip_grid if val >= 0]

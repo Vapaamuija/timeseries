@@ -74,6 +74,7 @@ def main(
 )
 @click.option("--output", "-o", help="Output file path")
 @click.option("--show/--no-show", default=False, help="Display plot after creation")
+@click.option("--debug-visuals/--no-debug-visuals", default=False, help="Enable visual debug helpers")
 @click.pass_context
 def plot(
     ctx: Any,
@@ -86,9 +87,13 @@ def plot(
     symbols: Optional[str],
     output: Optional[str],
     show: bool,
+    debug_visuals: bool,
 ) -> None:
     """Plot weather data for a single airport."""
     try:
+        # Update debug mode in config if flag is set
+        if debug_visuals:
+            ctx.obj.plotting.debug = True
         # Validate ICAO code
         if not validate_icao_code(icao_code):
             click.echo(f"Error: Invalid ICAO code '{icao_code}'", err=True)

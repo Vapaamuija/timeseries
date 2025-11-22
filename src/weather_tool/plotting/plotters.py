@@ -8,6 +8,7 @@ now using composition and delegation to follow SOLID principles.
 import logging
 from typing import Any, Dict, List, Optional
 
+import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.figure import Figure
 
@@ -184,6 +185,15 @@ class MeteogramPlotter(WeatherPlotter):
 
         self.grid_manager.apply_unified_grid(all_axes, data)
 
+        # Pass axis references to grid manager for correct grid calculation
+        # Parameter plotter stores the secondary axes created
+        axis_refs = self.parameter_plotter.get_axis_references()
+        self.grid_manager.set_axis_references(
+            wind_axis=axis_refs.get("wind_axis"),
+            pressure_axis=axis_refs.get("pressure_axis"),
+            precip_axis=axis_refs.get("precip_axis"),
+        )
+
         # Calculate shared grid system for all variables using grid manager
         self.grid_manager.calculate_shared_grid_system(ax_main_params, data)
 
@@ -201,8 +211,67 @@ class MeteogramPlotter(WeatherPlotter):
         # Add bottom legend column with colors and definitions
         self.bottom_legend_plotter.add_bottom_legend(fig, data, label_padding)
 
+        # Apply visual debug helpers if enabled
+        if self.config.debug_mode:
+            self._apply_debug_visuals(fig, all_axes)
+
         logger.info("Meteogram created successfully using SOLID principles")
         return fig
+
+    def _apply_debug_visuals(self, fig: Figure, axes: List[Any]) -> None:
+        """Apply visual debug helpers to the plot."""
+        import random
+        
+        # Define a list of very light pastel colors for debugging
+        debug_colors = [
+            "#fff0f0", "#f0fff0", "#f0f0ff", "#fff8f0", "#f0fff8", 
+            "#f8f0ff", "#fffff0", "#f0ffff", "#fff0ff", "#f5f5f5"
+        ]
+        
+        # Axis labels to identify panels
+        labels = [
+            "Hour Labels", "Cloud High", "Cloud Med", "Cloud Low", 
+            "Fog", "Separator", "Weather Symbols", "Main Params", 
+            "Time Axis", "Wind Section"
+        ]
+        
+        # Add figure bounding box
+        rect = plt.Rectangle(
+            (0, 0), 1, 1, 
+            transform=fig.transFigure, 
+            facecolor="none", 
+            edgecolor="red", 
+            linewidth=2, 
+            linestyle="--",
+            zorder=1000
+        )
+        fig.patches.append(rect)
+        fig.text(0.01, 0.99, "DEBUG MODE", color="red", weight="bold", transform=fig.transFigure)
+        
+        for i, ax in enumerate(axes):
+            # Use modulo to cycle through colors
+            bg_color = debug_colors[i % len(debug_colors)]
+            
+            # Set background color
+            ax.set_facecolor(bg_color)
+            
+            # Add bounding box
+            for spine in ax.spines.values():
+                spine.set_visible(True)
+                spine.set_color("red")
+                spine.set_linestyle(":")
+                spine.set_linewidth(1)
+                
+            # Add label in center
+            label = labels[i] if i < len(labels) else f"Panel {i}"
+            ax.text(
+                0.5, 0.5, label,
+                transform=ax.transAxes,
+                ha="center", va="center",
+                color="red", alpha=0.3,
+                fontsize=12, weight="bold",
+                zorder=1000
+            )
 
     def get_supported_variables(self) -> List[str]:
         """Get supported variables for meteogram."""

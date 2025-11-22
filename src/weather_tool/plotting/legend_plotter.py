@@ -7,6 +7,7 @@ This module provides legend plotting functionality following the Single Responsi
 import logging
 from typing import Any, Dict, List, Optional, Tuple
 
+import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
@@ -131,6 +132,22 @@ class MeteogramLegendPlotter(SideLegendPlotter):
         # Add wind speed legend if data exists (Outer column)
         if "wind_speed" in data.columns and self._shared_grid_values:
             self._add_wind_speed_legend(fig, bbox, wind_x)
+            # Add vertical separator line between wind and temp
+            if "temperature" in data.columns:
+                separator_x = wind_x + (temp_x - wind_x) / 2
+                # Draw line from bottom of plot area to top of plot area
+                # Axis bbox height is relative to figure, so we use that
+                fig.add_artist(
+                    plt.Line2D(
+                        [separator_x, separator_x],
+                        [bbox.y0, bbox.y0 + bbox.height],
+                        color="black",
+                        linewidth=0.5,
+                        linestyle="-",
+                        transform=fig.transFigure,
+                        clip_on=False,
+                    )
+                )
 
         # Add temperature legend if data exists (Inner column)
         if "temperature" in data.columns and self._shared_grid_values:
@@ -154,6 +171,12 @@ class MeteogramLegendPlotter(SideLegendPlotter):
 
         return legend_x, unit_offset
 
+    def _format_value(self, value: float) -> str:
+        """Format value as integer if it's a whole number, otherwise 1 decimal."""
+        if abs(value - round(value)) < 0.001:
+            return str(int(round(value)))
+        return f"{value:.1f}"
+
     def _add_temperature_legend(self, fig: Any, bbox: Any, legend_x: float) -> None:
         """Add temperature legend to the left side."""
         colors = self.config.get_effective_colors()
@@ -176,7 +199,7 @@ class MeteogramLegendPlotter(SideLegendPlotter):
                 fig.text(
                     legend_x,
                     y_pos_fig,
-                    f"{int(temp_val)}°",
+                    f"{self._format_value(temp_val)}°",
                     fontsize=9,
                     va="center",
                     ha="left",
@@ -202,18 +225,6 @@ class MeteogramLegendPlotter(SideLegendPlotter):
                     ha="left",
                     color=colors["temperature_above"],
                     fontweight="bold",
-                    transform=fig.transFigure,
-                )
-                
-                # Add thermometer symbol
-                fig.text(
-                    legend_x,
-                    temp_label_y + 0.015,
-                    "🌡",  # Thermometer
-                    fontsize=14,
-                    va="center",
-                    ha="left",
-                    color=colors["temperature_above"],
                     transform=fig.transFigure,
                 )
 
@@ -248,7 +259,7 @@ class MeteogramLegendPlotter(SideLegendPlotter):
                 fig.text(
                     wind_legend_x,
                     y_pos_fig,
-                    f"{int(wind_val)}",
+                    f"{self._format_value(wind_val)}",
                     fontsize=legend_fontsize,
                     va="center",
                     ha="left",
@@ -282,18 +293,6 @@ class MeteogramLegendPlotter(SideLegendPlotter):
                     fontweight="bold",
                     transform=fig.transFigure,
                 )
-                
-                # Add wind symbol
-                fig.text(
-                    wind_legend_x,
-                    wind_label_y + 0.015,
-                    "💨",  # Wind
-                    fontsize=14,
-                    va="center",
-                    ha="left",
-                    color=wind_color,
-                    transform=fig.transFigure,
-                )
 
     def _add_right_side_legends(
         self, ax: Axes, data: pd.DataFrame, label_padding: Optional[Any] = None
@@ -321,6 +320,21 @@ class MeteogramLegendPlotter(SideLegendPlotter):
         # Add precipitation legend if data exists (Outer column)
         if "precipitation" in data.columns and self._shared_grid_values:
             self._add_precipitation_legend(fig, bbox, precip_x)
+            # Add vertical separator line between pressure and precipitation
+            if "pressure" in data.columns:
+                separator_x = precip_x - (precip_x - pressure_x) / 2
+                # Draw line from bottom of plot area to top of plot area
+                fig.add_artist(
+                    plt.Line2D(
+                        [separator_x, separator_x],
+                        [bbox.y0, bbox.y0 + bbox.height],
+                        color="black",
+                        linewidth=0.5,
+                        linestyle="-",
+                        transform=fig.transFigure,
+                        clip_on=False,
+                    )
+                )
 
         # Add pressure legend if data exists (Inner column)
         if "pressure" in data.columns and self._shared_grid_values:
@@ -372,7 +386,7 @@ class MeteogramLegendPlotter(SideLegendPlotter):
                 fig.text(
                     legend_x,
                     y_pos_fig,
-                    f"{int(precip_val)}",
+                    f"{self._format_value(precip_val)}",
                     fontsize=legend_fontsize,
                     va="center",
                     ha="right",
@@ -404,18 +418,6 @@ class MeteogramLegendPlotter(SideLegendPlotter):
                     ha="right",
                     color=precip_color,
                     fontweight="bold",
-                    transform=fig.transFigure,
-                )
-                
-                # Add rain symbol
-                fig.text(
-                    legend_x,
-                    precip_label_y + 0.015,
-                    "☂",  # Umbrella/Rain
-                    fontsize=14,
-                    va="center",
-                    ha="right",
-                    color=precip_color,
                     transform=fig.transFigure,
                 )
 
@@ -450,7 +452,7 @@ class MeteogramLegendPlotter(SideLegendPlotter):
                 fig.text(
                     pressure_legend_x,
                     y_pos_fig,
-                    f"{int(pressure_val)}",
+                    f"{self._format_value(pressure_val)}",
                     fontsize=legend_fontsize,
                     va="center",
                     ha="right",
@@ -482,17 +484,5 @@ class MeteogramLegendPlotter(SideLegendPlotter):
                     ha="right",
                     color=pressure_color,
                     fontweight="bold",
-                    transform=fig.transFigure,
-                )
-                
-                # Add pressure symbol
-                fig.text(
-                    pressure_legend_x,
-                    pressure_label_y + 0.015,
-                    "⏱",  # Stopwatch/Gauge approximation
-                    fontsize=14,
-                    va="center",
-                    ha="right",
-                    color=pressure_color,
                     transform=fig.transFigure,
                 )

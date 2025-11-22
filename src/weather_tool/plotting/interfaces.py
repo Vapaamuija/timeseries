@@ -54,6 +54,9 @@ class PlotConfig:
     grid_color: str = "grey"
     grid_alpha: float = 0.3
 
+    # Debug settings
+    debug_mode: bool = False
+
     # Symbol settings - Default to SVG icons from metno_weather_icons/
     symbol_type: SymbolType = SymbolType.SVG
     symbol_size: int = 20

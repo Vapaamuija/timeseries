@@ -88,6 +88,8 @@ class WeatherPlotter:
             time_axis_padding=getattr(self.config, "time_axis_padding", None),
             # Variable configuration
             variable_config=self.config.plotting.variable_config,
+            # Debug settings
+            debug_mode=self.config.plotting.debug,
         )
 
         self.plot_config = plot_config

@@ -49,6 +49,9 @@ class PlottingConfig:
     # Layout configuration
     layout: Optional[Dict[str, Any]] = None
 
+    # Debug configuration
+    debug: bool = False
+
     # Weather symbols
     include_weather_symbols: bool = True
     symbol_size: int = 20
@@ -193,6 +196,8 @@ class Config:
                 "colors": self.plotting.colors,
                 # Layout configuration
                 "layout": self.plotting.layout,
+                # Debug configuration
+                "debug": self.plotting.debug,
                 # Weather symbols
                 "include_weather_symbols": self.plotting.include_weather_symbols,
                 "symbol_size": self.plotting.symbol_size,
